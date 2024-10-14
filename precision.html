@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veeranjaneyulu Speed Check</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            height:100vh;
+            display:flex;
+            flex-direction: column;
+
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .target, .counter {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .target {
+            background-color: #d3e4ff;
+            color: #333;
+            border: 2px solid #a0c4ff;
+        }
+
+        .counter {
+            background-color: #ffe6e6;
+            color: #333;
+            border: 2px solid #ff9b9b;
+        }
+
+        button {
+    padding: 8px 16px; /* Reduced padding */
+    font-size: 16px;   /* Smaller font size */
+    margin: 10px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease transform 0.1s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    background-color: #004494;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Veeranjaneyulu Speed Check</h1>
+    <div id="target" class="target">Your time</div>
+    <div id="counter" class="counter">Count</div>
+    <button onclick="startTimer()">Start Timer</button>
+    <button onclick="recordTime()">Stop Timer</button>
+
+    <script>
+        let stopTime = undefined;
+        function startTimer() {
+            let count = 5; 
+            document.getElementById("counter").textContent = count;
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    document.getElementById("counter").textContent = 4 - i; 
+                }, i * 1000); 
+            }
+            setTimeout(() => {
+                if (stopTime === undefined) {
+                    document.getElementById("target").textContent = "Too Slow";
+                } else {
+                    const elapsedTime = Math.abs(stopTime - (Date.now() - 5000)); 
+                    document.getElementById("target").textContent = `Time was ${elapsedTime} milliseconds`;
+                }
+            }, 5000); 
+        }
+
+        function recordTime() {
+            stopTime = Date.now();
+            console.log("Stop time recorded at: " + stopTime);
+        }
+    </script>
+</body>
+</html>
