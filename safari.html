@@ -19,23 +19,22 @@
             <div class="card info-card p-3 btn-small" onclick="alert('Click on the locations to find rare animals, watch out for the lion!')">
                 <p>Click on the locations to find rare animals, watch out for the lion!</p>
             </div>
-            <div class="card info-card p-3 btn-small" id="locations" onclick="alert('Number of locations checked is zero.')">
+            <div class="card info-card p-3 btn-small" id="locations">
                 <p>Number of locations checked is zero.</p>
             </div>
-            <div class="card info-card p-3 btn-small" id="score" onclick="alert('Score is zero.')">
+            <div class="card info-card p-3 btn-small" id="score">
                 <p>Score is zero.</p>
             </div>
             <div class="card info-card p-3 btn-small" onclick="help()">
                 <p>Click for help.</p>
             </div>
-            <div class="card info-card p-3 btn-small" id="help" onclick="alert('Help report.')">
+            <div class="card info-card p-3 btn-small" id="help">
                 <p>Help report</p>
             </div>
         </div>
     </div>
 
     <div class="game-grid">
-        <!-- Dynamically add 6 rows, each with 6 divs as locations -->
         <div class="row">
             <div class="location tree" id="cell-0" onclick="check(0)"></div>
             <div class="location tree" id="cell-1" onclick="check(1)"></div>
@@ -84,6 +83,7 @@
             <div class="location tree" id="cell-34" onclick="check(34)"></div>
             <div class="location tree" id="cell-35" onclick="check(35)"></div>
         </div>
+
     </div>
 
     <script>
@@ -91,24 +91,32 @@
         let score = 0;
         let locationsVisited = 0;
         let lastLocation = 0;
-        let zebraLocations = [1, 8, 12, 22, 34];
-        let lionLocation = 14;
+        let lionLocation = Math.floor(Math.random() * 36);
+        let zebraLocations = [];
+        while (zebraLocations.length < 5) {
+            let randomPos = Math.floor(Math.random() * 36);
+            if (!zebraLocations.includes(randomPos) && randomPos !== lionLocation) {
+                zebraLocations.push(randomPos);
+            }
+        }
+        
         let gameOver = false;
         function check(position) {
             if (gameOver) return;
-            
+
             let imageId = ids[position];
             let imageElement = document.getElementById(imageId);
             if (position === lionLocation) {
-                imageElement.style.backgroundImage = "url('lion.jpg')"; 
+                imageElement.style.backgroundImage = "url('lion.jpg')";
                 gameOver = true;
                 score -= 2;
                 alert("Game Over! You encountered a lion!");
             } else if (zebraLocations.includes(position)) {
-                imageElement.style.backgroundImage = "url('zebra.jpg')"; 
+                imageElement.style.backgroundImage = "url('zebra.jpg')";
                 score += 4;
+                zebraLocations = zebraLocations.filter(z => z !== position);
             } else {
-                imageElement.style.backgroundImage = "url('elephant.jpg')"; 
+                imageElement.style.backgroundImage = "url('elephant.jpg')";
                 score++;
             }
 
@@ -116,12 +124,20 @@
             document.getElementById('locations').textContent = `Number of locations checked is ${locationsVisited}.`;
             document.getElementById('score').textContent = `Score is ${score}.`;
             lastLocation = position;
+            moveLion();
         }
-
+        function moveLion() {
+            let direction = Math.floor(Math.random() * 4);
+            if (direction === 0 && lionLocation % 6 !== 0) lionLocation--; 
+            else if (direction === 1 && lionLocation % 6 !== 5) lionLocation++; 
+            else if (direction === 2 && lionLocation >= 6) lionLocation -= 6; 
+            else if (direction === 3 && lionLocation < 30) lionLocation += 6; 
+        }
         function help() {
             let message = getHelpMessage();
             document.getElementById('help').textContent = message;
         }
+
         function getHelpMessage() {
             let neighbors = [
                 lastLocation - 1, lastLocation + 1,

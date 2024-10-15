@@ -34,6 +34,7 @@
     <button onclick="addEnd()">Add end</button>
     <button onclick="addFront()">Add front</button>
     <button onclick="removeMiddle()">Remove middle</button>
+    <button onclick="swapElements()">Swap</button> 
 
     <div class="flex-container" id="flexContainer">
         <div class="divlist">Item 1</div>
@@ -42,11 +43,9 @@
 
     <script>
         function addEnd() {
-            
             const inputValue = document.getElementById("inputText").value;
             if (!inputValue) return;
 
-            
             const newDiv = document.createElement("div");
             newDiv.className = "divlist";
             newDiv.innerHTML = inputValue;
@@ -55,11 +54,9 @@
         }
 
         function addFront() {
-           
             const inputValue = document.getElementById("inputText").value;
             if (!inputValue) return;
 
-           
             const newDiv = document.createElement("div");
             newDiv.className = "divlist";
             newDiv.innerHTML = inputValue;
@@ -69,14 +66,31 @@
         }
 
         function removeMiddle() {
-          
             const divListItems = document.getElementsByClassName("divlist");
-
             const length = divListItems.length;
             if (length > 0) {
                 const middleIndex = Math.floor(length / 2);
                 divListItems[middleIndex].remove(); 
             }
+        }
+        function swapElements() {
+            const divListItems = document.getElementsByClassName("divlist");
+            const length = divListItems.length;
+            if (length < 2) return; 
+            let index1 = Math.floor(Math.random() * length);
+            let index2;
+            do {
+                index2 = Math.floor(Math.random() * length);
+            } while (index1 === index2);  
+            const container = document.getElementById("flexContainer");
+            const element1 = divListItems[index1];
+            const element2 = divListItems[index2];
+
+            const clonedElement1 = element1.cloneNode(true);
+            const clonedElement2 = element2.cloneNode(true);
+
+            container.replaceChild(clonedElement2, element1);
+            container.replaceChild(clonedElement1, element2);
         }
     </script>
 </body>
