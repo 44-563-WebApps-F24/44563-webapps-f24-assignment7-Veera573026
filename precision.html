@@ -15,7 +15,6 @@
             height:100vh;
             display:flex;
             flex-direction: column;
-
         }
 
         h1 {
@@ -42,25 +41,24 @@
         }
 
         button {
-    padding: 8px 16px; /* Reduced padding */
-    font-size: 16px;   /* Smaller font size */
-    margin: 10px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease transform 0.1s;
-}
+            padding: 8px 16px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease transform 0.1s;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-button:active {
-    background-color: #004494;
-}
-
+        button:active {
+            background-color: #004494;
+        }
     </style>
 </head>
 <body>
@@ -72,22 +70,28 @@ button:active {
 
     <script>
         let stopTime = undefined;
+        let countdownStart = 5; // Default start value
+        
         function startTimer() {
-            let count = 5; 
+            // Randomly choose a starting value between 2 and 10
+            countdownStart = Math.floor(Math.random() * 9) + 2; 
+            let count = countdownStart;
             document.getElementById("counter").textContent = count;
-            for (let i = 0; i < 5; i++) {
+
+            for (let i = 0; i < countdownStart; i++) {
                 setTimeout(() => {
-                    document.getElementById("counter").textContent = 4 - i; 
+                    document.getElementById("counter").textContent = countdownStart - 1 - i; 
                 }, i * 1000); 
             }
+
             setTimeout(() => {
                 if (stopTime === undefined) {
                     document.getElementById("target").textContent = "Too Slow";
                 } else {
-                    const elapsedTime = Math.abs(stopTime - (Date.now() - 5000)); 
+                    const elapsedTime = Math.abs(stopTime - (Date.now() - countdownStart * 1000)); 
                     document.getElementById("target").textContent = `Time was ${elapsedTime} milliseconds`;
                 }
-            }, 5000); 
+            }, countdownStart * 1000); 
         }
 
         function recordTime() {
